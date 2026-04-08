@@ -1,0 +1,590 @@
+{
+  "Arbus": {
+    "y": 39.5268407074916,
+    "x": 8.600058345781967,
+    "neighbours": {
+      "Gonnosfanadiga": 9.80,
+      "Guspini": 5.60,
+      "Pabillonis": 17.40,
+      "Iglesias": 47.40
+    }
+  },
+  "Guspini": {
+    "y": 39.53941532513374,
+    "x": 8.627180469190856,
+    "neighbours": {
+      "Arbus": 5.60,
+      "Gonnosfanadiga": 6.10,
+      "Pabillonis": 11.80,
+      "San Gavino Monreale": 18.20
+    }
+  },
+  "Gonnosfanadiga": {
+    "y": 39.49608814788687,
+    "x": 8.66218644746321,
+    "neighbours": {
+      "Arbus": 9.80,
+      "Guspini": 6.10,
+      "San Gavino Monreale": 16.20,
+      "Villacidro": 11.10
+    }
+  },
+  "Pabillonis": {
+    "y": 39.59392982582394,
+    "x": 8.719676633848323,
+    "neighbours": {
+      "Arbus": 17.40,
+      "Guspini": 11.80,
+      "San Gavino Monreale": 9.10,
+      "Sardara": 10.40
+    }
+  },
+  "San Gavino Monreale": {
+    "y": 39.54994912523005,
+    "x": 8.791650233076089,
+    "neighbours": {
+      "Gonnosfanadiga": 16.20,
+      "Guspini": 18.20,
+      "Pabillonis": 9.10,
+      "Samassi": 21.80,
+      "Sardara": 7.70,
+      "Villacidro": 11.50,
+      "Sanluri": 11.20
+    }
+  },
+  "Sardara": {
+    "y": 39.612072063764074,
+    "x": 8.821471959408933,
+    "neighbours": {
+      "Collinas": 4.50,
+      "Pabillonis": 10.40,
+      "San Gavino Monreale": 7.70,
+      "Sanluri": 9.90
+    }
+  },
+  "Collinas": {
+    "y": 39.63999617188156,
+    "x": 8.83672758954815,
+    "neighbours": {
+      "Lunamatrona": 7.70,
+      "Sardara": 4.50,
+      "Villamar": 15.50,
+      "Villanovafranca": 21.50
+    }
+  },
+  "Lunamatrona": {
+    "y": 39.64729039308615,
+    "x": 8.900253754980858,
+    "neighbours": {
+      "Collinas": 7.70,
+      "Pauli Arbarei": 3.10,
+      "Siddi": 4.10
+    }
+  },
+  "Pauli Arbarei": {
+    "y": 39.66252613757811,
+    "x": 8.921923480433135,
+    "neighbours": {
+      "Lunamatrona": 3.10,
+      "Sanluri": 13.70,
+      "Villamar": 7.90
+    }
+  },
+  "Villamar": {
+    "y": 39.62266921186048,
+    "x": 8.960261439474948,
+    "neighbours": {
+      "Collinas": 15.50,
+      "Pauli Arbarei": 7.90,
+      "Sanluri": 11.10,
+      "Segariu": 11.00,
+      "Villanovafranca": 6.60
+    }
+  },
+  "Villanovafranca": {
+    "y": 39.645358702001694,
+    "x": 9.001429718207117,
+    "neighbours": {
+      "Barumini": 10.50,
+      "Collinas": 21.50,
+      "Las Plassas": 7.40,
+      "Villamar": 6.60
+    }
+  },
+  "Las Plassas": {
+    "y": 39.67948149504731,
+    "x": 8.984676426955517,
+    "neighbours": {
+      "Barumini": 3.10,
+      "Tuili": 4.70,
+      "Villanovafranca": 7.40
+    }
+  },
+  "Barumini": {
+    "y": 39.703658923607904,
+    "x": 9.000914088789665,
+    "neighbours": {
+      "Gesturi": 4.80,
+      "Las Plassas": 3.10,
+      "Tuili": 4.10,
+      "Villanovafranca": 10.50
+    }
+  },
+  "Tuili": {
+    "y": 39.714829195427384,
+    "x": 8.960213264424777,
+    "neighbours": {
+      "Barumini": 4.10,
+      "Las Plassas": 4.70,
+      "Setzu": 2.70,
+      "Siddi": 10.50
+    }
+  },
+  "Gesturi": {
+    "y": 39.73283635498724,
+    "x": 9.021124391936723,
+    "neighbours": {
+      "Barumini": 4.80,
+      "Genuri": 14.00,
+      "Turri": 14.00
+    }
+  },
+  "Genuri": {
+    "y": 39.743705038748054,
+    "x": 8.92439686729393,
+    "neighbours": {
+      "Gesturi": 14.00,
+      "Setzu": 2.80,
+      "Turri": 6.30
+    }
+  },
+  "Setzu": {
+    "y": 39.72290398991742,
+    "x": 8.93965906274756,
+    "neighbours": {
+      "Genuri": 2.80,
+      "Siddi": 9.90,
+      "Tuili": 2.70
+    }
+  },
+  "Siddi": {
+    "y": 39.67195255172312,
+    "x": 8.888367441544741,
+    "neighbours": {
+      "Lunamatrona": 4.10,
+      "Setzu": 9.90,
+      "Tuili": 10.50
+    }
+  },
+  "Turri": {
+    "y": 39.70521678982978,
+    "x": 8.916984499362872,
+    "neighbours": {
+      "Genuri": 6.30,
+      "Gesturi": 14.00
+    }
+  },
+  "Sanluri": {
+    "y": 39.562882741938274,
+    "x": 8.89989559888172,
+    "neighbours": {
+      "Pauli Arbarei": 13.70,
+      "Samassi": 11.10,
+      "Sardara": 9.90,
+      "Serrenti": 15.20,
+      "Villamar": 11.10,
+      "Furtei": 4.70,
+      "San Gavino Monreale": 11.20
+    }
+  },
+  "Samassi": {
+    "y": 39.480924897213235,
+    "x": 8.905859603509303,
+    "neighbours": {
+      "Furtei": 10.80,
+      "San Gavino Monreale": 21.80,
+      "Sanluri": 11.10,
+      "Serramanna": 7.50,
+      "Serrenti": 6.60,
+      "Villacidro": 15.30
+    }
+  },
+  "Serrenti": {
+    "y": 39.49233973379145,
+    "x": 8.975573072448894,
+    "neighbours": {
+      "Furtei": 10.70,
+      "Sanluri": 15.20,
+      "Segariu": 14.10,
+      "Serramanna": 9.80,
+      "Samassi": 6.60
+    }
+  },
+  "Segariu": {
+    "y": 39.56346664193107,
+    "x": 8.981892347785216,
+    "neighbours": {
+      "Furtei": 3.90,
+      "Guasila": 5.90,
+      "Serrenti": 14.10,
+      "Villamar": 11.00
+    }
+  },
+  "Furtei": {
+    "y": 39.56205181521578,
+    "x": 8.945346883300017,
+    "neighbours": {
+      "Guasila": 9.70,
+      "Samassi": 10.80,
+      "Segariu": 3.90,
+      "Serrenti": 10.70,
+      "Sanluri": 4.70
+    }
+  },
+  "Guasila": {
+    "y": 39.559462076102015,
+    "x": 9.043626592942314,
+    "neighbours": {
+      "Furtei": 9.70,
+      "Samatzai": 10.80,
+      "Segariu": 5.90,
+      "Senorbi": 8.60
+    }
+  },
+  "Senorbi": {
+    "y": 39.532303582125174,
+    "x": 9.130650879627623,
+    "neighbours": {
+      "Donori": 13.70,
+      "Guasila": 8.60
+    }
+  },
+  "Samatzai": {
+    "y": 39.4834656005262,
+    "x": 9.034316304020797,
+    "neighbours": {
+      "Guasila": 10.80,
+      "Monastir": 15.40,
+      "Nuraminis": 5.60,
+      "Serramanna": 22.10
+    }
+  },
+  "Nuraminis": {
+    "y": 39.44150970476367,
+    "x": 9.01317170040077,
+    "neighbours": {
+      "Monastir": 20.0,
+      "Samatzai": 5.60,
+      "Serramanna": 18.70
+    }
+  },
+  "Serramanna": {
+    "y": 39.42287263968074,
+    "x": 8.920957361559937,
+    "neighbours": {
+      "Nuraminis": 18.70,
+      "Samassi": 7.50,
+      "Samatzai": 22.10,
+      "Serrenti": 9.80,
+      "Vallermosa": 17.20,
+      "Villasor": 5.60
+    }
+  },
+  "Villasor": {
+    "y":  39.38029774205857,
+    "x": 8.940605436587365,
+    "neighbours": {
+      "Decimomannu": 9.50,
+      "Decimoputzu": 7.50,
+      "Serramanna": 5.60,
+      "Vallermosa": 20.20,
+      "Villacidro": 23.80
+    }
+  },
+  "Decimoputzu": {
+    "y": 39.33580762069994,
+    "x": 8.915338258259965,
+    "neighbours": {
+      "Decimomannu": 8.30,
+      "San Sperate": 12.90,
+      "Siliqua": 14.10,
+      "Villasor": 7.50
+    }
+  },
+  "Decimomannu": {
+    "y": 39.31139743175534,
+    "x": 8.966789818891959,
+    "neighbours": {
+      "Assemini": 5.10,
+      "Decimoputzu": 8.30,
+      "Uta": 6.50,
+      "Villasor": 9.50
+    }
+  },
+  "Uta": {
+    "y": 39.28954715652239,
+    "x": 8.956987909590632,
+    "neighbours": {
+      "Assemini": 8.20,
+      "Decimomannu": 6.50,
+      "Monastir": 21.80,
+      "Siliqua": 14.30
+    }
+  },
+  "Assemini": {
+    "y": 39.28701654850821,
+    "x": 9.00548538953131,
+    "neighbours": {
+      "Capoterra": 17.70,
+      "Decimomannu": 5.10,
+      "Elmas": 4.40,
+      "San Sperate": 10.70,
+      "Uta": 8.20
+    }
+  },
+  "Elmas": {
+    "y": 39.269959742689586,
+    "x": 9.048667623935449,
+    "neighbours": {
+      "Assemini": 4.40,
+      "Cagliari": 10.60,
+      "Selargius": 12.40,
+      "Sestu": 6.00
+    }
+  },
+  "Sestu": {
+    "y": 39.300827706854776,
+    "x": 9.092003949168907,
+    "neighbours": {
+      "Elmas": 6.00,
+      "Selargius": 9.50,
+      "Monastir": 12.00
+    }
+  },
+  "Selargius": {
+    "y": 39.25966722049863,
+    "x": 9.162578209400547,
+    "neighbours": {
+      "Cagliari": 7.20,
+      "Elmas": 12.40,
+      "Quartu Sant'Elena": 5.20,
+      "Sestu": 9.50,
+      "Settimo San Pietro": 5.20
+    }
+  },
+  "Quartu Sant'Elena": {
+    "y": 39.24150754489821,
+    "x": 9.183749272540277,
+    "neighbours": {
+      "Cagliari": 7.50,
+      "Selargius": 5.20,
+      "Sinnai": 9.60
+    }
+  },
+  "Sinnai": {
+    "y": 39.307498356866354,
+    "x": 9.179006582284632,
+    "neighbours": {
+      "Quartu Sant'Elena": 9.60,
+      "Settimo San Pietro": 2.80
+    }
+  },
+  "Monastir": {
+    "y": 39.38398799370282,
+    "x": 9.044906954135984,
+    "neighbours": {
+      "Nuraminis": 20.0,
+      "Samatzai": 15.40,
+      "San Sperate": 5.40,
+      "Serdiana": 14.00,
+      "Uta": 21.80,
+      "Sestu": 12.00
+    }
+  },
+  "San Sperate": {
+    "y": 39.35822311930745,
+    "x": 9.005158734656083,
+    "neighbours": {
+      "Assemini": 10.70,
+      "Decimoputzu": 12.90,
+      "Donori": 16.10,
+      "Monastir": 5.40
+    }
+  },
+  "Donori": {
+    "y": 39.431930076892215,
+    "x": 9.12521340297618,
+    "neighbours": {
+      "San Sperate": 16.10,
+      "Senorbi": 13.70,
+      "Serdiana": 9.00
+    }
+  },
+  "Pula": {
+    "y": 39.01213824698775,
+    "x": 9.001170587127648,
+    "neighbours": {
+      "Capoterra": 22.40,
+      "Teulada": 33.10
+    }
+  },
+  "Capoterra": {
+    "y": 39.178986783806934,
+    "x": 8.971159594432226,
+    "neighbours": {
+      "Assemini": 17.70,
+      "Cagliari": 23.60,
+      "Pula": 22.40,
+      "Nuxis": 47.20,
+      "Teulada": 54.00
+    }
+  },
+  "Villacidro": {
+    "y": 39.45830294413976,
+    "x": 8.739287612336978,
+    "neighbours": {
+      "Domusnovas": 32.20,
+      "Gonnosfanadiga": 11.10,
+      "San Gavino Monreale": 11.50,
+      "Vallermosa": 16.10,
+      "Villasor": 23.80,
+      "Samassi": 15.30
+    }
+  },
+  "Cagliari": {
+    "y": 39.22375147994865,
+    "x": 9.12165984656156,
+    "neighbours": {
+      "Capoterra": 23.60,
+      "Elmas": 10.60,
+      "Quartu Sant'Elena": 7.50,
+      "Selargius": 7.20
+    }
+  },
+  "Serdiana": {
+    "y": 39.374333322752236,
+    "x": 9.157852767257365,
+    "neighbours": {
+      "Donori": 9.00,
+      "Monastir": 14.00,
+      "Settimo San Pietro": 11.90
+    }
+  },
+  "Settimo San Pietro": {
+    "y": 39.29037072974854,
+    "x": 9.18596482186883,
+    "neighbours": {
+      "Selargius": 5.20,
+      "Serdiana": 11.90,
+      "Sinnai": 2.80
+    }
+  },
+  "Siliqua": {
+    "y": 39.29983806994151,
+    "x": 8.81277493624355,
+    "neighbours": {
+      "Decimoputzu": 14.10,
+      "Domusnovas": 16.20,
+      "Musei": 16.20,
+      "Uta": 14.30,
+      "Vallermosa": 17.90,
+      "Carbonia": 42.10,
+      "Nuxis": 22.60
+    }
+  },
+  "Vallermosa": {
+    "y": 39.36331630995358,
+    "x": 8.796608236266799,
+    "neighbours": {
+      "Musei": 19.20,
+      "Serramanna": 17.20,
+      "Siliqua": 17.90,
+      "Villacidro": 16.10,
+      "Villasor": 20.20
+    }
+  },
+  "Domusnovas": {
+    "y": 39.320917891290335,
+    "x": 8.649326956364966,
+    "neighbours": {
+      "Iglesias": 10.60,
+      "Musei": 2.20,
+      "Siliqua": 16.20,
+      "Villacidro": 32.20
+    }
+  },
+  "Iglesias": {
+    "y": 39.31256839216918,
+    "x": 8.535920232960551,
+    "neighbours": {
+      "Domusnovas": 10.60,
+      "Musei": 12.60,
+      "Carbonia": 23.90,
+      "Nuxis": 34.60,
+      "Arbus": 47.40
+    }
+  },
+  "Musei": {
+    "y": 39.301366267996904,
+    "x": 8.666907657895699,
+    "neighbours": {
+      "Domusnovas": 2.20,
+      "Iglesias": 12.60,
+      "Siliqua": 16.20,
+      "Vallermosa": 19.20,
+      "Narcao": 28.90
+    }
+  },
+  "Carbonia": {
+    "y": 39.164456378532435,
+    "x": 8.522698254946274,
+    "neighbours": {
+      "Siliqua": 42.10,
+      "Iglesias": 23.90,
+      "Nuxis": 23.50,
+      "Giba": 20.30,
+      "Narcao": 16.80
+    }
+  },
+  "Nuxis": {
+    "y": 39.155359676151626,
+    "x": 8.740277250165303,
+    "neighbours": {
+      "Carbonia": 23.50,
+      "Capoterra": 47.20,
+      "Iglesias": 34.60,
+      "Siliqua": 22.60,
+      "Teulada": 31.90,
+      "Giba": 13.90,
+      "Narcao": 6.60
+    }
+  },
+   "Teulada": {
+    "y": 38.968785352403216,
+    "x": 8.76981049490697,
+    "neighbours": {
+      "Nuxis": 31.90,
+      "Pula": 33.10,
+      "Capoterra": 54.00,
+      "Giba": 21.70
+    }
+  },
+  "Giba": {
+    "y": 39.07144729376072,
+    "x": 8.635198289593541,
+    "neighbours": {
+      "Nuxis": 13.90,
+      "Carbonia": 20.30,
+      "Teulada": 21.70
+    }
+  },
+  "Narcao": {
+    "y": 39.16728747493818,
+    "x": 8.677133278997252,
+    "neighbours": {
+      "Nuxis": 6.60,
+      "Carbonia": 16.80,
+      "Musei": 28.90
+    }
+  }
+}
