@@ -20,19 +20,6 @@ def _bfs_nodes_in_memory(queue, visited, parent):
     Since the same node may appear in more than one structure, the union of
     these sets is used to count each stored node only once.
 
-    Parameters
-    ----------
-    queue : collections.deque[str]
-        BFS frontier.
-    visited : set[str]
-        Set of discovered nodes.
-    parent : dict[str, str | None]
-        Parent dictionary used for path reconstruction.
-
-    Returns
-    -------
-    int
-        Number of distinct nodes currently stored in memory.
     """
     return len(set(queue) | visited | set(parent.keys()))
 
@@ -50,35 +37,98 @@ def _ucs_nodes_in_memory(priority_queue, expanded, cost_so_far, parent):
     Since a node may be present in multiple structures at the same time,
     the union of the corresponding node sets is used to avoid double counting.
 
-    Parameters
-    ----------
-    priority_queue : list[tuple[float, str]]
-        Priority queue used by Uniform Cost Search.
-    expanded : set[str]
-        Set of nodes already expanded.
-    cost_so_far : dict[str, float]
-        Best known cumulative cost for each discovered node.
-    parent : dict[str, str | None]
-        Parent dictionary used for path reconstruction.
-
-    Returns
-    -------
-    int
-        Number of distinct nodes currently stored in memory.
     """
     frontier_nodes = {node for _, node in priority_queue}
     return len(frontier_nodes | expanded | set(cost_so_far.keys()) | set(parent.keys()))
 
+def _bidirectional_bfs_nodes_in_memory(
+    queue_start, queue_goal, visited_start, visited_goal, parent_start, parent_goal
+):
+    """
+    Estimate the number of distinct nodes currently stored in memory by
+    Bidirectional BFS.
+    """
+    return len(
+        set(queue_start)
+        | set(queue_goal)
+        | visited_start
+        | visited_goal
+        | set(parent_start.keys())
+        | set(parent_goal.keys())
+    )
+
+
+def _reconstruct_bidirectional_path(parent_start, parent_goal, meeting_node):
+    """
+    Reconstruct the final path once the two BFS frontiers meet.
+    """
+    path_from_start = reconstruct_path(parent_start, meeting_node)
+
+    path_to_goal = []
+    node = parent_goal[meeting_node]
+
+    while node is not None:
+        path_to_goal.append(node)
+        node = parent_goal[node]
+
+    return path_from_start + path_to_goal
+
+
+def _expand_bidirectional_layer(
+    graph, queue, visited_this, visited_other, parent_this, visited_order
+):
+    """
+    Expand exactly one BFS layer from one side of a bidirectional search.
+
+    Returns:
+    - meeting_node: the first node where the two searches meet, or None
+    - expanded_in_layer: number of nodes expanded in this layer
+    - newly_added: nodes discovered while expanding the layer
+    - expanded_nodes_list: nodes extracted from the frontier in this layer
+    """
+    layer_size = len(queue)
+    expanded_in_layer = 0
+    newly_added = []
+    expanded_nodes_list = []
+
+    for _ in range(layer_size):
+        current = queue.popleft()
+        visited_order.append(current)
+        expanded_nodes_list.append(current)
+        expanded_in_layer += 1
+
+        for neighbor in graph[current]:
+            if neighbor not in visited_this:
+                visited_this.add(neighbor)
+                parent_this[neighbor] = current
+                queue.append(neighbor)
+                newly_added.append(neighbor)
+
+                if neighbor in visited_other:
+                    return neighbor, expanded_in_layer, newly_added, expanded_nodes_list
+
+    return None, expanded_in_layer, newly_added, expanded_nodes_list
 
 def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+    """
+        Breadth-First Search on an unweighted graph.
+
+        BFS explores the graph level by level, so if all edges are considered to
+        have the same cost, it returns a path with the minimum number of edges.
+    """
     if start not in graph:
         raise ValueError(f"Start node '{start}' is not present in the graph.")
 
     if goal not in graph:
         raise ValueError(f"Goal node '{goal}' is not present in the graph.")
 
+    # FIFO queue
     queue = deque([start])
+
+    #Nodes already discovered.
     visited = {start}
+
+    # Parent dictionary
     parent = {start: None}
     visited_order = []
     step = 0
@@ -153,6 +203,13 @@ def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
 
 
 def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+    """
+       Uniform Cost Search on a weighted graph.
+
+       UCS always expands the node with the smallest cumulative path cost g(n).
+       With non-negative edge costs, it returns an optimal path in terms of
+       total cost.
+    """
     if weighted_graph is None:
         weighted_graph = graph
 
@@ -257,41 +314,6 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
     - g(n) is the exact cost from the start node to n
     - h(n) is a heuristic estimate from n to the goal
 
-
-    This implementation also collects empirical metrics:
-    - expanded_nodes: number of expanded nodes
-    - max_frontier_size: maximum size of the priority queue
-    - max_nodes_in_memory: maximum number of distinct nodes stored
-    - path_cost: total cost of the final path
-
-    Parameters
-    ----------
-    graph : dict[str, list[str]]
-        Unweighted adjacency list. It is included to keep the same interface
-        used by the other search algorithms, although A* uses `weighted_graph`.
-    start : str
-        Starting node.
-    goal : str
-        Target node.
-    verbose : bool, optional
-        If True, prints the frontier evolution and intermediate steps.
-    weighted_graph : dict[str, dict[str, float]], optional
-        Weighted graph representation used for path costs.
-    data : dict, optional
-        Full map data, including city coordinates, used by the heuristic.
-
-    Returns
-    -------
-    tuple[list[str] | None, list[str], dict]
-        Returns:
-        - path: optimal path from start to goal, or None if unreachable
-        - visited_order: order of node expansion
-        - metrics: dictionary containing empirical complexity information
-
-    Notes
-    -----
-    - With a suitable heuristic, A* is typically more efficient than UCS.
-    - If the heuristic is admissible and consistent, A* returns an optimal path.
     """
     if weighted_graph is None:
         raise ValueError("A* requires a weighted graph.")
@@ -418,6 +440,160 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
         "max_frontier_size": max_frontier_size,
         "max_nodes_in_memory": max_nodes_in_memory,
         "path_cost": round_cost(cost_so_far[goal])
+    }
+
+    return path, visited_order, metrics
+
+def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+    """
+    Bidirectional Breadth-First Search on an unweighted graph.
+
+    The algorithm runs two BFS searches simultaneously:
+    one forward from the start node and one backward from the goal node.
+    When the two frontiers meet, the corresponding partial paths are joined.
+
+    This implementation assumes an undirected graph.
+
+    Like standard BFS, Bidirectional BFS returns a path with the minimum number
+    of edges, not necessarily the minimum weighted cost.
+    """
+    if start not in graph:
+        raise ValueError(f"Start node '{start}' is not present in the graph.")
+
+    if goal not in graph:
+        raise ValueError(f"Goal node '{goal}' is not present in the graph.")
+
+    if start == goal:
+        path = [start]
+        metrics = {
+            "expanded_nodes": 1,
+            "max_frontier_size": 1,
+            "max_nodes_in_memory": 1,
+            "path_cost": compute_path_cost(path, weighted_graph)
+        }
+        return path, [start], metrics
+
+    queue_start = deque([start])
+    queue_goal = deque([goal])
+
+    visited_start = {start}
+    visited_goal = {goal}
+
+    parent_start = {start: None}
+    parent_goal = {goal: None}
+
+    visited_order = []
+    step = 0
+    meeting_node = None
+
+    expanded_nodes = 0
+    max_frontier_size = len(queue_start) + len(queue_goal)
+    max_nodes_in_memory = _bidirectional_bfs_nodes_in_memory(
+        queue_start, queue_goal, visited_start, visited_goal, parent_start, parent_goal
+    )
+
+    if verbose:
+        print(f"Start node: {start}")
+        print(f"Goal node: {goal}")
+        print(f"Initial forward frontier: {list(queue_start)}")
+        print(f"Initial backward frontier: {list(queue_goal)}")
+
+    while queue_start and queue_goal and meeting_node is None:
+        if verbose:
+            print(f"Step {step} (forward)")
+            print(f"Forward frontier before extraction: {list(queue_start)}")
+            print(f"Backward frontier before extraction: {list(queue_goal)}")
+
+        meeting_node, expanded_in_layer, newly_added, expanded_layer_nodes = (
+            _expand_bidirectional_layer(
+                graph,
+                queue_start,
+                visited_start,
+                visited_goal,
+                parent_start,
+                visited_order
+            )
+        )
+        expanded_nodes += expanded_in_layer
+
+        if verbose:
+            print(f"Expanded nodes from start side: {expanded_layer_nodes}")
+            print(f"Newly added forward nodes: {newly_added}")
+
+        max_frontier_size = max(max_frontier_size, len(queue_start) + len(queue_goal))
+        max_nodes_in_memory = max(
+            max_nodes_in_memory,
+            _bidirectional_bfs_nodes_in_memory(
+                queue_start, queue_goal,
+                visited_start, visited_goal,
+                parent_start, parent_goal
+            )
+        )
+
+        if meeting_node is not None:
+            if verbose:
+                print(f"Search frontiers met at node: {meeting_node}")
+            break
+
+        if verbose:
+            print(f"Forward frontier after expansion: {list(queue_start)}")
+            print(f"Backward frontier after expansion: {list(queue_goal)}")
+            print(f"Visited order so far: {visited_order}")
+            print(f"Step {step} (backward)")
+            print(f"Forward frontier before extraction: {list(queue_start)}")
+            print(f"Backward frontier before extraction: {list(queue_goal)}")
+
+        meeting_node, expanded_in_layer, newly_added, expanded_layer_nodes = (
+            _expand_bidirectional_layer(
+                graph,
+                queue_goal,
+                visited_goal,
+                visited_start,
+                parent_goal,
+                visited_order
+            )
+        )
+        expanded_nodes += expanded_in_layer
+
+        if verbose:
+            print(f"Expanded nodes from goal side: {expanded_layer_nodes}")
+            print(f"Newly added backward nodes: {newly_added}")
+
+        max_frontier_size = max(max_frontier_size, len(queue_start) + len(queue_goal))
+        max_nodes_in_memory = max(
+            max_nodes_in_memory,
+            _bidirectional_bfs_nodes_in_memory(
+                queue_start, queue_goal,
+                visited_start, visited_goal,
+                parent_start, parent_goal
+            )
+        )
+
+        if verbose:
+            if meeting_node is not None:
+                print(f"Search frontiers met at node: {meeting_node}")
+            print(f"Forward frontier after expansion: {list(queue_start)}")
+            print(f"Backward frontier after expansion: {list(queue_goal)}")
+            print(f"Visited order so far: {visited_order}")
+
+        step += 1
+
+    if meeting_node is None:
+        metrics = {
+            "expanded_nodes": expanded_nodes,
+            "max_frontier_size": max_frontier_size,
+            "max_nodes_in_memory": max_nodes_in_memory,
+            "path_cost": None
+        }
+        return None, visited_order, metrics
+
+    path = _reconstruct_bidirectional_path(parent_start, parent_goal, meeting_node)
+
+    metrics = {
+        "expanded_nodes": expanded_nodes,
+        "max_frontier_size": max_frontier_size,
+        "max_nodes_in_memory": max_nodes_in_memory,
+        "path_cost": compute_path_cost(path, weighted_graph)
     }
 
     return path, visited_order, metrics
