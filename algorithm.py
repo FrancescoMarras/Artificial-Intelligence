@@ -451,11 +451,6 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
     The algorithm runs two BFS searches simultaneously:
     one forward from the start node and one backward from the goal node.
     When the two frontiers meet, the corresponding partial paths are joined.
-
-    This implementation assumes an undirected graph.
-
-    Like standard BFS, Bidirectional BFS returns a path with the minimum number
-    of edges, not necessarily the minimum weighted cost.
     """
     if start not in graph:
         raise ValueError(f"Start node '{start}' is not present in the graph.")

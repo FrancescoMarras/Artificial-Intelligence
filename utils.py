@@ -1,6 +1,6 @@
 import json
 import matplotlib.pyplot as plt
-
+import math
 
 def load_map_from_json(json_path):
     """
@@ -188,7 +188,7 @@ def compute_path_cost(path, weighted_graph, digits=2):
 
     return round_cost(total, digits)
 
-import math
+
 
 def heuristic(city_1, city_2, data):
     """
