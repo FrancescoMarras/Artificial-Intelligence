@@ -41,6 +41,22 @@ def _ucs_nodes_in_memory(priority_queue, expanded, cost_so_far, parent):
     frontier_nodes = {node for _, node in priority_queue}
     return len(frontier_nodes | expanded | set(cost_so_far.keys()) | set(parent.keys()))
 
+def _a_star_nodes_in_memory(priority_queue, expanded, cost_so_far, parent):
+    """
+    Estimate the number of distinct nodes currently stored in memory by A*.
+
+    The function considers the main A* data structures:
+    - priority_queue: frontier nodes stored as (f, g, node)
+    - expanded: nodes already expanded
+    - cost_so_far: best known g(n) for each discovered node
+    - parent: predecessor dictionary used for path reconstruction
+
+    Since the same node may appear in multiple structures at the same time,
+    the union of the corresponding node sets is used to avoid double counting.
+    """
+    frontier_nodes = {node for _, _, node in priority_queue}
+    return len(frontier_nodes | expanded | set(cost_so_far.keys()) | set(parent.keys()))
+
 def _bidirectional_bfs_nodes_in_memory(
     queue_start, queue_goal, visited_start, visited_goal, parent_start, parent_goal
 ):
@@ -344,8 +360,8 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
 
     expanded_nodes = 0
     max_frontier_size = len(priority_queue)
-    max_nodes_in_memory = _ucs_nodes_in_memory(
-        [(f, node) for f, g, node in priority_queue],
+    max_nodes_in_memory = _a_star_nodes_in_memory(
+        priority_queue,
         expanded,
         cost_so_far,
         parent
@@ -409,8 +425,8 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
         max_frontier_size = max(max_frontier_size, len(priority_queue))
         max_nodes_in_memory = max(
             max_nodes_in_memory,
-            _ucs_nodes_in_memory(
-                [(f, node) for f, g, node in priority_queue],
+            _a_star_nodes_in_memory(
+                priority_queue,
                 expanded,
                 cost_so_far,
                 parent
