@@ -226,8 +226,6 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
        With non-negative edge costs, it returns an optimal path in terms of
        total cost.
     """
-    if weighted_graph is None:
-        weighted_graph = graph
 
     if start not in weighted_graph:
         raise ValueError(f"Start node '{start}' is not present in the graph.")
