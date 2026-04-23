@@ -104,13 +104,10 @@ def _expand_bidirectional_layer(
     """
     layer_size = len(queue)
     expanded_in_layer = 0
-    newly_added = []
-    expanded_nodes_list = []
 
     for _ in range(layer_size):
         current = queue.popleft()
         visited_order.append(current)
-        expanded_nodes_list.append(current)
         expanded_in_layer += 1
 
         for neighbor in graph[current]:
@@ -118,14 +115,13 @@ def _expand_bidirectional_layer(
                 visited_this.add(neighbor)
                 parent_this[neighbor] = current
                 queue.append(neighbor)
-                newly_added.append(neighbor)
 
                 if neighbor in visited_other:
-                    return neighbor, expanded_in_layer, newly_added, expanded_nodes_list
+                    return neighbor, expanded_in_layer
 
-    return None, expanded_in_layer, newly_added, expanded_nodes_list
+    return None, expanded_in_layer
 
-def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+def bfs(graph, start, goal, weighted_graph=None, data=None):
     """
         Breadth-First Search on an unweighted graph.
 
@@ -147,42 +143,24 @@ def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
     # Parent dictionary
     parent = {start: None}
     visited_order = []
-    step = 0
 
     expanded_nodes = 0
     max_frontier_size = len(queue)
     max_nodes_in_memory = _bfs_nodes_in_memory(queue, visited, parent)
 
-    if verbose:
-        print(f"Start node: {start}")
-        print(f"Goal node: {goal}")
-        print(f"Initial frontier: {list(queue)}")
-
     while queue:
-        if verbose:
-            print(f"Step {step}")
-            print(f"Frontier before extraction: {list(queue)}")
-
         current = queue.popleft()
         visited_order.append(current)
         expanded_nodes += 1
 
-        if verbose:
-            print(f"Extracted node: {current}")
-
         if current == goal:
-            if verbose:
-                print(f"Goal reached: {goal}")
             break
-
-        newly_added = []
 
         for neighbor in graph[current]:
             if neighbor not in visited:
                 visited.add(neighbor)
                 parent[neighbor] = current
                 queue.append(neighbor)
-                newly_added.append(neighbor)
 
         max_frontier_size = max(max_frontier_size, len(queue))
         max_nodes_in_memory = max(
@@ -190,12 +168,6 @@ def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
             _bfs_nodes_in_memory(queue, visited, parent)
         )
 
-        if verbose:
-            print(f"Newly added nodes: {newly_added}")
-            print(f"Frontier after expansion: {list(queue)}")
-            print(f"Visited order so far: {visited_order}")
-
-        step += 1
 
     if goal not in parent:
         metrics = {
@@ -218,7 +190,7 @@ def bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
     return path, visited_order, metrics
 
 
-def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+def uniform_cost_search(graph, start, goal, weighted_graph=None, data=None):
     """
        Uniform Cost Search on a weighted graph.
 
@@ -239,7 +211,6 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
     cost_so_far = {start: 0.0}
     visited_order = []
     expanded = set()
-    step = 0
 
     expanded_nodes = 0
     max_frontier_size = len(priority_queue)
@@ -247,16 +218,8 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
         priority_queue, expanded, cost_so_far, parent
     )
 
-    if verbose:
-        print(f"Start node: {start}")
-        print(f"Goal node: {goal}")
-        print(f"Initial frontier: {priority_queue}")
 
     while priority_queue:
-        if verbose:
-            print(f"Step {step}")
-            print(f"Frontier before extraction: {priority_queue}")
-
         current_cost, current = heappop(priority_queue)
 
         if current in expanded:
@@ -266,15 +229,9 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
         visited_order.append(current)
         expanded_nodes += 1
 
-        if verbose:
-            print(f"Extracted node: {current} with cumulative cost {round(current_cost, 2)}")
-
         if current == goal:
-            if verbose:
-                print(f"Goal reached: {goal}")
             break
 
-        newly_added = []
 
         for neighbor, edge_cost in weighted_graph[current].items():
             new_cost = current_cost + edge_cost
@@ -283,20 +240,12 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
                 cost_so_far[neighbor] = new_cost
                 parent[neighbor] = current
                 heappush(priority_queue, (new_cost, neighbor))
-                newly_added.append((neighbor, round(new_cost, 2)))
 
         max_frontier_size = max(max_frontier_size, len(priority_queue))
         max_nodes_in_memory = max(
             max_nodes_in_memory,
             _ucs_nodes_in_memory(priority_queue, expanded, cost_so_far, parent)
         )
-
-        if verbose:
-            print(f"Newly added/updated nodes: {newly_added}")
-            print(f"Frontier after expansion: {priority_queue}")
-            print(f"Visited order so far: {visited_order}")
-
-        step += 1
 
     if goal not in cost_so_far:
         metrics = {
@@ -318,7 +267,7 @@ def uniform_cost_search(graph, start, goal, verbose=False, weighted_graph=None, 
 
     return path, visited_order, metrics
 
-def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+def a_star_search(graph, start, goal, weighted_graph=None, data=None):
     """
     Perform A* Search on a weighted graph.
 
@@ -354,7 +303,6 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
     cost_so_far = {start: 0.0}
     visited_order = []
     expanded = set()
-    step = 0
 
     expanded_nodes = 0
     max_frontier_size = len(priority_queue)
@@ -365,15 +313,7 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
         parent
     )
 
-    if verbose:
-        print(f"Start node: {start}")
-        print(f"Goal node: {goal}")
-        print(f"Initial frontier: {priority_queue}")
-
     while priority_queue:
-        if verbose:
-            print(f"Step {step}")
-            print(f"Frontier before extraction: {priority_queue}")
 
         current_f, current_cost, current = heappop(priority_queue)
 
@@ -385,20 +325,8 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
         visited_order.append(current)
         expanded_nodes += 1
 
-        if verbose:
-            print(
-                f"Extracted node: {current} "
-                f"with g={round_cost(current_cost)}, "
-                f"h={round_cost(heuristic(current, goal, data))}, "
-                f"f={round_cost(current_f)}"
-            )
-
         if current == goal:
-            if verbose:
-                print(f"Goal reached: {goal}")
             break
-
-        newly_added = []
 
         for neighbor, edge_cost in weighted_graph[current].items():
             new_cost = current_cost + edge_cost
@@ -411,14 +339,6 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
                 parent[neighbor] = current
                 heappush(priority_queue, (estimated_total_cost, new_cost, neighbor))
 
-                newly_added.append(
-                    (
-                        neighbor,
-                        round_cost(new_cost),
-                        round_cost(heuristic_value),
-                        round_cost(estimated_total_cost)
-                    )
-                )
 
         max_frontier_size = max(max_frontier_size, len(priority_queue))
         max_nodes_in_memory = max(
@@ -430,13 +350,6 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
                 parent
             )
         )
-
-        if verbose:
-            print(f"Newly added/updated nodes: {newly_added}")
-            print(f"Frontier after expansion: {priority_queue}")
-            print(f"Visited order so far: {visited_order}")
-
-        step += 1
 
     if goal not in cost_so_far:
         metrics = {
@@ -458,7 +371,7 @@ def a_star_search(graph, start, goal, verbose=False, weighted_graph=None, data=N
 
     return path, visited_order, metrics
 
-def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, data=None):
+def bidirectional_bfs(graph, start, goal, weighted_graph=None, data=None):
     """
     Bidirectional Breadth-First Search on an unweighted graph.
 
@@ -492,7 +405,6 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
     parent_goal = {goal: None}
 
     visited_order = []
-    step = 0
     meeting_node = None
 
     expanded_nodes = 0
@@ -501,19 +413,9 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
         queue_start, queue_goal, visited_start, visited_goal, parent_start, parent_goal
     )
 
-    if verbose:
-        print(f"Start node: {start}")
-        print(f"Goal node: {goal}")
-        print(f"Initial forward frontier: {list(queue_start)}")
-        print(f"Initial backward frontier: {list(queue_goal)}")
 
     while queue_start and queue_goal and meeting_node is None:
-        if verbose:
-            print(f"Step {step} (forward)")
-            print(f"Forward frontier before extraction: {list(queue_start)}")
-            print(f"Backward frontier before extraction: {list(queue_goal)}")
-
-        meeting_node, expanded_in_layer, newly_added, expanded_layer_nodes = (
+        meeting_node, expanded_in_layer = (
             _expand_bidirectional_layer(
                 graph,
                 queue_start,
@@ -524,10 +426,6 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
             )
         )
         expanded_nodes += expanded_in_layer
-
-        if verbose:
-            print(f"Expanded nodes from start side: {expanded_layer_nodes}")
-            print(f"Newly added forward nodes: {newly_added}")
 
         max_frontier_size = max(max_frontier_size, len(queue_start) + len(queue_goal))
         max_nodes_in_memory = max(
@@ -540,19 +438,9 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
         )
 
         if meeting_node is not None:
-            if verbose:
-                print(f"Search frontiers met at node: {meeting_node}")
             break
 
-        if verbose:
-            print(f"Forward frontier after expansion: {list(queue_start)}")
-            print(f"Backward frontier after expansion: {list(queue_goal)}")
-            print(f"Visited order so far: {visited_order}")
-            print(f"Step {step} (backward)")
-            print(f"Forward frontier before extraction: {list(queue_start)}")
-            print(f"Backward frontier before extraction: {list(queue_goal)}")
-
-        meeting_node, expanded_in_layer, newly_added, expanded_layer_nodes = (
+        meeting_node, expanded_in_layer = (
             _expand_bidirectional_layer(
                 graph,
                 queue_goal,
@@ -564,10 +452,6 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
         )
         expanded_nodes += expanded_in_layer
 
-        if verbose:
-            print(f"Expanded nodes from goal side: {expanded_layer_nodes}")
-            print(f"Newly added backward nodes: {newly_added}")
-
         max_frontier_size = max(max_frontier_size, len(queue_start) + len(queue_goal))
         max_nodes_in_memory = max(
             max_nodes_in_memory,
@@ -578,14 +462,6 @@ def bidirectional_bfs(graph, start, goal, verbose=False, weighted_graph=None, da
             )
         )
 
-        if verbose:
-            if meeting_node is not None:
-                print(f"Search frontiers met at node: {meeting_node}")
-            print(f"Forward frontier after expansion: {list(queue_start)}")
-            print(f"Backward frontier after expansion: {list(queue_goal)}")
-            print(f"Visited order so far: {visited_order}")
-
-        step += 1
 
     if meeting_node is None:
         metrics = {
